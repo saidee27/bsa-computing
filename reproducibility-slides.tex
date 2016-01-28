@@ -45,7 +45,7 @@
 			\item \texttt{Git}: A ``version control'' tool used for collaborating and maintaining different versions of a file, typically for code.
 			\begin{itemize}
 				\item Great for collaborating, or just saving your own ass.
-				\item Often used in conjunction with \textit{GitHub}, an online repository storage service. \\
+				\item Often used in conjunction with \textit{GitHub}, an online repository storage service.
 			\end{itemize}
 			\item \texttt{knitr}: An R package that lets you create documents containing R code and output.
 			\begin{itemize}
@@ -78,27 +78,29 @@
 			\item To create a local copy of an existing git repository, use 
 			\\ \texttt{git clone [url] [directory-name]}.
 			\item In a terminal (Mac, Linux) or the Git Shell (Windows), navigate to the folder you want to clone the repository into.
-			\item \textbf{Exercise}: Clone my \texttt{bsa-computing} repository onto your computer. The URL is \url{https://github.com/nseewald1/bsa-computing.git}
+			\item \textbf{Exercise:} Clone my \texttt{bsa-computing} repository onto your computer. The URL is \url{https://github.com/nseewald1/bsa-computing.git}
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Make Changes!}
+		\begin{itemize}
+			\item You now have a copy of both the current version of \texttt{bsa-computing} \textit{and} access to every previous version.
+			\item This clone is NOT automatically synced, \`a la Dropbox
+			\begin{itemize}
+				\item Anything you break is completely isolated from the pristine copy on GitHub and your previous ``commits''.
+			\end{itemize}
+			\item \textbf{Exercise:} Add to \texttt{food-exercise.md}, and save your changes.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Making Commits}
+		\begin{itemize}
+			\item Once you've accomplished a relatively small, but still significant task, you'll want to ``commit'' your code to the repository.
+			\item This creates a labeled snapshot of the directory at the time of the commit.
 		\end{itemize}
 	\end{frame}
 	
 	\section{\texttt{knitr}}
-	
-	\begin{frame}{Agenda}
-		\begin{enumerate}
-			\item \texttt{Git}: A ``version control'' tool used for collaborating and maintaining different versions of a file, typically for code.
-			\begin{itemize}
-				\item Great for collaborating, or just saving your own ass.
-				\item Often used in conjunction with \textit{GitHub}, an online repository storage service.
-			\end{itemize}
-			
-			\item \texttt{knitr}: An R package that lets you create documents containing R code and output.
-			\begin{itemize}
-				\item Keep everything you need to generate a report (e.g., for research, homework, or 699) in one place!
-				\item My favorite part: Update code without having to re-create tables! (This is where errors creep in!)
-			\end{itemize}
-		\end{enumerate}
-	\end{frame}
 	
 	\begin{frame}{What is \texttt{knitr}?}
 		\begin{itemize}
