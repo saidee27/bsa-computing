@@ -1,6 +1,7 @@
 \documentclass{beamer}
 \usetheme{Ilmenau}
-\usepackage{amsmath,float,setspace,lmodern,graphicx,amsthm,amsfonts,multirow,hyperref,bm,bbm}
+\usepackage{amsmath,float,setspace,lmodern,graphicx,
+amsthm,amsfonts,multirow,hyperref,bm,bbm,booktabs}
 
 \setbeamertemplate{itemize items}[default]
 \setbeamertemplate{enumerate items}[default]
@@ -15,6 +16,32 @@
 % \logo{\includegraphics[height=.6cm]{blockm.png}}
 
 \begin{document}
+
+<<setup, include=FALSE, cache=FALSE>>=
+set.seed(1001)
+
+# Set global chunk options for figure formatting, etc.
+opts_chunk$set(fig.align = "center", fig.width = 5.5, fig.height = 4, 
+               dev = "tikz", dev.args = list(pointsize = 11), 
+               echo = FALSE,  fig.show = "hold", par = TRUE)
+
+knit_hooks$set(
+  par = function(before, options, envir){
+    if (before && options$fig.show != "none") {
+      par(mar = c(3, 3, 3, 0) + 0.5, mgp = c(2, 0.5, 0),
+          oma = rep(0, 4), las = 1, tcl = 0.25)}
+    })
+knit_hooks$set(
+  inline = function(x){if (is.numeric(x)) round(x, 2) else x})
+
+library(MASS)
+library(xtable)
+#Install a tool that allows me to print chunk syntax to LaTeX
+library(devtools)
+devtools::install_github('thell/knitliteral')
+knitLiteral::kast_on()
+
+@
 	
 	\maketitle
 	
@@ -47,7 +74,6 @@
 				\item Great for collaborating, or just saving your own ass.
 				\item Often used in conjunction with \textit{GitHub}, an online repository storage service.
 			\end{itemize}
-
 			\item \texttt{knitr}: An R package that lets you create documents containing R code and output.
 			\begin{itemize}
 				\item Keep everything you need to generate a report (e.g., for research, homework, or 699) in one place!
@@ -56,7 +82,7 @@
 		\end{enumerate}
 	\end{frame}
 	
-	\section{\texttt{Git}}
+	\section{\texttt{Git}}  
 	
 	\begin{frame}{A brief warning}
 <<xkcd, include=T, echo=F>>=
@@ -74,17 +100,158 @@ download.file("http://imgs.xkcd.com/comics/git.png", "xkcd-git.png",
 		Create a GitHub account, then download either Git or GitHub Desktop.
 		\begin{itemize}
 			\item Pure Git (i.e., just command-line tools): \url{https://git-scm.com/downloads}
-			\item GitHub Desktop (GUI + command-line tools): \url{https://desktop.github.com/}
+			\item GitHub Desktop (GUI \& command-line tools): \url{https://desktop.github.com/}
 		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Forking a Repository}
+		A \textit{fork} is a copy of a repository. Forks let you
+		\begin{itemize}
+			\item make changes to an existing repo without affecting the original project
+			\item use the existing project as a starting point for your own
+		\end{itemize}
+		One of the benefits of open source!
+		
+		\textbf{Exercise:} Fork my \texttt{bsa-computing} repository.
+	\end{frame}
+	
+	\begin{frame}{Cloning a Repository}
+		\begin{itemize}
+			\item To create a local copy of an existing git repository, use 
+			\\ \texttt{git clone [url] [directory-name]}.
+			\item In a terminal (Mac, Linux) or the Git Shell (Windows), navigate to the folder you want to clone the repository into.
+			\item \textbf{Exercise:} Clone your forked \texttt{bsa-computing} repository onto your computer. The URL will be of the form \texttt{https://github.com/[username]/bsa-computing.git}
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Make Changes!}
+		\begin{itemize}
+			\item You now have a copy of both the current version of \texttt{bsa-computing} \textit{and} access to every previous version.
+			\item This clone is NOT automatically synced, \`a la Dropbox
+			\begin{itemize}
+				\item Anything you break is completely isolated from the pristine copy on GitHub and your previous ``commits''.
+			\end{itemize}
+			\item \textbf{Exercise:} Add to \texttt{food-exercise.md}, and save your changes.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Making Commits and Pushing}
+		\begin{itemize}
+			\item Once you've accomplished a relatively small, but still significant task, you'll want to ``commit'' your code to the repository.
+			\item This creates a labeled snapshot of the directory at the time of the commit.
+			\item Syncing your commits with the existing remote repository is called ``pushing''.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Shell Commands for Commits and Push/Pull}
+		\begin{itemize}
+			\item To \textit{pull} down the most recent version of the remote repository, use \texttt{git pull}
+			\item To make and push commits
+			\begin{itemize}
+				\item Check what you've changed with \texttt{git status} and \texttt{git diff}.
+				\item Add files to the commit using \texttt{git add [files]}.
+				\item Create a commit using \texttt{git commit -m [message]}
+				\item Push your commit to the remote repository using \texttt{git push}
+			\end{itemize}
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Merging Your Fork with the Original}
+		On GitHub, create a \textit{pull request} to merge your changes into my repository. The owner (me) will be able to look at and accept/decline them.
 	\end{frame}
 	
 	\section{\texttt{knitr}}
 	
 	\begin{frame}{What is \texttt{knitr}?}
 		\begin{itemize}
-			\item \texttt{knitr} lets you embed code and output from R into \LaTeX, HTML, RMarkdown, etc.
+			\item \texttt{knitr} lets you embed code and output from R into \LaTeX, HTML, RMarkdown, etc. I'll be using \LaTeX.
+			\item Might require a bit more thought with R code to get the correct output, but it's worth it.
 		\end{itemize}
+		The \texttt{knitr} Bible: \url{http://yihui.name/knitr/}
 	\end{frame}
 	
+	\begin{frame}{Chunks}
+		\texttt{knitr} separates R code from \LaTeX \ using structures called ``chunks''.
+		\begin{block}{Chunk Syntax}
+		  <<chunkname, eval=FALSE, opts.label="literal-literal">>=
+
+      @
+		\end{block}
+	\end{frame}
+	
+		\begin{frame}{Chunk Options}
+		When you define a chunk, you also can include a number of options that tell \texttt{knitr} how to interpret the R code inside. Some basic important options are:
+		\begin{itemize}
+			\item \texttt{echo (TRUE)}: Whether or not to include the R code itself in the document.
+			\item \texttt{results}: How to display results. Default is in a \LaTeX \ \texttt{verbatim} environment.
+			\begin{itemize}
+				\item \texttt{asis}: Write raw results into the document (e.g., with \texttt{xtable})
+			\end{itemize}
+			\item \texttt{include (TRUE)}: Whether to include the chunk output in the document. The code is still run. Useful for data steps.
+			\item \texttt{cache (FALSE)}: Stashes the output of a chunk to avoid running it every time you compile.
+		\end{itemize}
+		\footnotesize{More options and more details at \url{http://yihui.name/knitr/options/}.}
+	\end{frame}
+	
+<<exampledata, cache=T>>=
+htwt <- read.table("heightWeightData.txt")
+names(htwt) <- c("gender", "height", "weight")
+htwt$id <- seq(1:dim(htwt)[1])
+male <- subset(htwt, htwt$gender == 1)
+@
+
+<<functions>>=
+est <- function(x) {
+  ## Compute empirical estimates of bivariate normal parameters for given data x
+    muX  <- with(x, mean(height))
+    muY  <- with(x, mean(weight))
+    varX <- with(x, 1/(dim(x)[1] - 1) * sum((height - muX)^2))
+    varY <- with(x, 1/(dim(x)[1] - 1) * sum((weight - muY)^2))
+    rho  <- with(x, 1/(dim(x)[1] - 1) *
+                   sum(((height - muX) * (weight - muY)) / sqrt(varX * varY)))
+  return(list(muX = muX, muY = muY, varX = varX, varY = varY, rho = rho))
+}
+
+contourPrep <- function(d, est) {
+  ## Simulation and kernel density estimation to construct contour plots
+  ## Input dataset and list output of est() above
+  sim <- with(est, MASS::mvrnorm(n = 5000, mu = c(muX, muY), 
+                           Sigma = matrix(c(varX, rho, rho, varY), 2)))
+  return(MASS::kde2d(sim[, 1], sim[, 2], n = 50, 
+               lims = with(d, c(range(height), range(weight)))))
+}
+
+plotter <- function(d, est, cont, ...) {
+  ## Construct frame of plot
+  plot <- with(d, plot(weight ~ height, type = "n", ...))
+  ## Plot IDs as points
+  with(d, text(weight ~ height, labels = id))
+  ## Draw contour lines
+  contour(cont, add = T, col = "grey60")
+}
+@
+	\begin{frame}{Example: Figure}
+<<exampleplot, out.width='.7\\textwidth', cache=TRUE>>=
+## Plotting
+ests <- est(male)
+contours <- contourPrep(male, ests)
+plotter(male, ests, contours, ylab = "Weight", xlab = "Height",
+                main = "Fitted Gaussian Model for Height and Weight in Males")
+@
+	\end{frame}
+	
+	\begin{frame}{Example: Tables}
+	There are \Sexpr{sum(htwt$gender == 2)} women in this dataset, out of \Sexpr{dim(htwt)[1]} total individuals.
+<<exampletable, results="asis">>=
+full <- with(htwt, cbind("Height" = height, "Weight" = weight))
+full <- cbind(apply(full, 2, mean), apply(full, 2, sd), apply(full, 2, median))
+colnames(full) <- c("Mean", "Std. Dev.", "Median")
+print(xtable(full, digits = 2, floating = FALSE, booktabs = TRUE,
+             caption = "Summary Statistics for All Individuals"))
+male.summary <- with(male, rbind(summary(height), summary(weight)))
+print(xtable(male.summary, digits = 2, floating = FALSE, booktabs = TRUE,
+             caption = "Summary Statistics for Men"))
+@
+	\end{frame}
 
 \end{document}

@@ -49,7 +49,8 @@
 
 \usepackage{alltt}
 \usetheme{Ilmenau}
-\usepackage{amsmath,float,setspace,lmodern,graphicx,amsthm,amsfonts,multirow,hyperref,bm,bbm}
+\usepackage{amsmath,float,setspace,lmodern,graphicx,
+amsthm,amsfonts,multirow,hyperref,bm,bbm,booktabs}
 
 \setbeamertemplate{itemize items}[default]
 \setbeamertemplate{enumerate items}[default]
@@ -64,6 +65,8 @@
 % \logo{\includegraphics[height=.6cm]{blockm.png}}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
+
+
 	
 	\maketitle
 	
@@ -96,7 +99,6 @@
 				\item Great for collaborating, or just saving your own ass.
 				\item Often used in conjunction with \textit{GitHub}, an online repository storage service.
 			\end{itemize}
-
 			\item \texttt{knitr}: An R package that lets you create documents containing R code and output.
 			\begin{itemize}
 				\item Keep everything you need to generate a report (e.g., for research, homework, or 699) in one place!
@@ -105,7 +107,7 @@
 		\end{enumerate}
 	\end{frame}
 	
-	\section{\texttt{Git}}
+	\section{\texttt{Git}}  
 	
 	\begin{frame}{A brief warning}
 
@@ -120,17 +122,153 @@
 		Create a GitHub account, then download either Git or GitHub Desktop.
 		\begin{itemize}
 			\item Pure Git (i.e., just command-line tools): \url{https://git-scm.com/downloads}
-			\item GitHub Desktop (GUI + command-line tools): \url{https://desktop.github.com/}
+			\item GitHub Desktop (GUI \& command-line tools): \url{https://desktop.github.com/}
 		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Forking a Repository}
+		A \textit{fork} is a copy of a repository. Forks let you
+		\begin{itemize}
+			\item make changes to an existing repo without affecting the original project
+			\item use the existing project as a starting point for your own
+		\end{itemize}
+		One of the benefits of open source!
+		
+		\textbf{Exercise:} Fork my \texttt{bsa-computing} repository.
+	\end{frame}
+	
+	\begin{frame}{Cloning a Repository}
+		\begin{itemize}
+			\item To create a local copy of an existing git repository, use 
+			\\ \texttt{git clone [url] [directory-name]}.
+			\item In a terminal (Mac, Linux) or the Git Shell (Windows), navigate to the folder you want to clone the repository into.
+			\item \textbf{Exercise:} Clone your forked \texttt{bsa-computing} repository onto your computer. The URL will be of the form \texttt{https://github.com/[username]/bsa-computing.git}
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Make Changes!}
+		\begin{itemize}
+			\item You now have a copy of both the current version of \texttt{bsa-computing} \textit{and} access to every previous version.
+			\item This clone is NOT automatically synced, \`a la Dropbox
+			\begin{itemize}
+				\item Anything you break is completely isolated from the pristine copy on GitHub and your previous ``commits''.
+			\end{itemize}
+			\item \textbf{Exercise:} Add to \texttt{food-exercise.md}, and save your changes.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Making Commits and Pushing}
+		\begin{itemize}
+			\item Once you've accomplished a relatively small, but still significant task, you'll want to ``commit'' your code to the repository.
+			\item This creates a labeled snapshot of the directory at the time of the commit.
+			\item Syncing your commits with the existing remote repository is called ``pushing''.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Shell Commands for Commits and Push/Pull}
+		\begin{itemize}
+			\item To \textit{pull} down the most recent version of the remote repository, use \texttt{git pull}
+			\item To make and push commits
+			\begin{itemize}
+				\item Check what you've changed with \texttt{git status} and \texttt{git diff}.
+				\item Add files to the commit using \texttt{git add [files]}.
+				\item Create a commit using \texttt{git commit -m [message]}
+				\item Push your commit to the remote repository using \texttt{git push}
+			\end{itemize}
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Merging Your Fork with the Original}
+		On GitHub, create a \textit{pull request} to merge your changes into my repository. The owner (me) will be able to look at and accept/decline them.
 	\end{frame}
 	
 	\section{\texttt{knitr}}
 	
 	\begin{frame}{What is \texttt{knitr}?}
 		\begin{itemize}
-			\item \texttt{knitr} lets you embed code and output from R into \LaTeX, HTML, RMarkdown, etc.
+			\item \texttt{knitr} lets you embed code and output from R into \LaTeX, HTML, RMarkdown, etc. I'll be using \LaTeX.
+			\item Might require a bit more thought with R code to get the correct output, but it's worth it.
 		\end{itemize}
+		The \texttt{knitr} Bible: \url{http://yihui.name/knitr/}
 	\end{frame}
 	
+	\begin{frame}{Chunks}
+		\texttt{knitr} separates R code from \LaTeX \ using structures called ``chunks''.
+		\begin{block}{Chunk Syntax}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+<<\hlkwd{list}\hlstd{(chunkname,} \hlkwc{eval}\hlstd{=}\hlnum{FALSE}>>=
+@
+\end{alltt}
+\end{kframe}
+
+
+\end{knitrout}
+		\end{block}
+	\end{frame}
+	
+		\begin{frame}{Chunk Options}
+		When you define a chunk, you also can include a number of options that tell \texttt{knitr} how to interpret the R code inside. Some basic important options are:
+		\begin{itemize}
+			\item \texttt{echo (TRUE)}: Whether or not to include the R code itself in the document.
+			\item \texttt{results}: How to display results. Default is in a \LaTeX \ \texttt{verbatim} environment.
+			\begin{itemize}
+				\item \texttt{asis}: Write raw results into the document (e.g., with \texttt{xtable})
+			\end{itemize}
+			\item \texttt{include (TRUE)}: Whether to include the chunk output in the document. The code is still run. Useful for data steps.
+			\item \texttt{cache (FALSE)}: Stashes the output of a chunk to avoid running it every time you compile.
+		\end{itemize}
+		\footnotesize{More options and more details at \url{http://yihui.name/knitr/options/}.}
+	\end{frame}
+	
+
+
+
+	\begin{frame}{Example: Figure}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.7\textwidth]{figure/exampleplot-1} 
+
+}
+
+
+
+\end{knitrout}
+	\end{frame}
+	
+	\begin{frame}{Example: Tables}
+	There are 137 women in this dataset, out of 210 total individuals.
+% latex table generated in R 3.2.3 by xtable 1.8-0 package
+% Thu Jan 28 23:19:06 2016
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrr}
+  \hline
+ & Mean & Std. Dev. & Median \\ 
+  \hline
+Height & 67.36 & 4.46 & 67.00 \\ 
+  Weight & 145.66 & 32.69 & 140.00 \\ 
+   \hline
+\end{tabular}
+\caption{Summary Statistics for All Individuals} 
+\end{table}
+% latex table generated in R 3.2.3 by xtable 1.8-0 package
+% Thu Jan 28 23:19:06 2016
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrrrr}
+  \hline
+ & Min. & 1st Qu. & Median & Mean & 3rd Qu. & Max. \\ 
+  \hline
+1 & 65.00 & 70.00 & 72.00 & 71.66 & 73.00 & 79.00 \\ 
+  2 & 125.00 & 155.00 & 170.00 & 175.60 & 185.00 & 280.00 \\ 
+   \hline
+\end{tabular}
+\caption{Summary Statistics for Men} 
+\end{table}
+
+	\end{frame}
 
 \end{document}
