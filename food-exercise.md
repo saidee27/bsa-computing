@@ -16,3 +16,4 @@ and add one or more items to the list. Then, commit your changes and push them.
 3. Oreos
 4. Carrots
 5. Celery
+6. Hummus
